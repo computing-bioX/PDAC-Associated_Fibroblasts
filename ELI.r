@@ -346,3 +346,6 @@ plotEnrichment(list_up100_fc[["up100_fc"]],all_fc_sort) + labs(title="up 100_fc"
 cor_matrix_mod<-cor(t(matrix_mod))
 rest_of_genes = setdiff(setdiff(allgenes, common_up), common_dn)
 write.table(cor_matrix_mod,"cor_matrix_mod.txt")
+t.test(c(cor_matrix_mod[common_dn,common_dn]), c(cor_matrix_mod[rest_of_genes,rest_of_genes]))
+t.test(c(cor_matrix_mod[common_up,common_up]), c(cor_matrix_mod[rest_of_genes,rest_of_genes]))
+
