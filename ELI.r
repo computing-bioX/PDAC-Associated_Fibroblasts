@@ -342,3 +342,7 @@ list_up100_fc<-list(up100_fc)
 names(list_up100_fc)<-c("up100_fc")
 fgsea_up <- fgsea(list_up100_fc,all_fc_sort,nperm=10000)
 plotEnrichment(list_up100_fc[["up100_fc"]],all_fc_sort) + labs(title="up 100_fc")
+###cor-->from line 154
+cor_matrix_mod<-cor(t(matrix_mod))
+rest_of_genes = setdiff(setdiff(allgenes, common_up), common_dn)
+write.table(cor_matrix_mod,"cor_matrix_mod.txt")
