@@ -349,3 +349,83 @@ write.table(cor_matrix_mod,"cor_matrix_mod.txt")
 t.test(c(cor_matrix_mod[common_dn,common_dn]), c(cor_matrix_mod[rest_of_genes,rest_of_genes]))
 t.test(c(cor_matrix_mod[common_up,common_up]), c(cor_matrix_mod[rest_of_genes,rest_of_genes]))
 
+#################
+Fibroblast <- subset(bothdata, idents = c("Fibroblast_TUMOR","Fibroblast_CTRL"))
+Idents(object = Fibroblast) <- Fibroblast@meta.data$orig.ident
+IIA_vs_IB <- FindMarkers(Fibroblast, ident.1 = c("T6","T9"), ident.2 = c("T3","T5","T10","T17","T18","T19","T21","T22","T24"), verbose = FALSE, logfc.threshold=0, min.pct=0, min.cells.feature =1, min.cells.group =1)
+write.table(IIA_vs_IB,"IIA_vs_IB_fibroblat_DE_all.txt",sep="\t")
+IIB_vs_IIA <- FindMarkers(Fibroblast, ident.1 = c("T2","T4","T7","T11","T13","T14","T15","T16","T23"), ident.2 = c("T6","T9"), verbose = FALSE, logfc.threshold=0, min.pct=0, min.cells.feature =1, min.cells.group =1)
+write.table(IIB_vs_IIA,"IIB_vs_IIA_fibroblat_DE_all.txt",sep="\t")
+III_vs_IIB <- FindMarkers(Fibroblast, ident.1 = c("T1","T8","T12"), ident.2 = c("T2","T4","T7","T11","T13","T14","T15","T16","T23"), verbose = FALSE, logfc.threshold=0, min.pct=0, min.cells.feature =1, min.cells.group =1)
+write.table(III_vs_IIB,"III_vs_IIB_fibroblat_DE_all.txt",sep="\t")
+III_vs_II <- FindMarkers(Fibroblast, ident.1 = c("T1","T8","T12"), ident.2 = c("T2","T4","T7","T11","T13","T14","T15","T16","T23","T6","T9"), verbose = FALSE, logfc.threshold=0, min.pct=0, min.cells.feature =1, min.cells.group =1)
+write.table(III_vs_II,"III_vs_II_fibroblat_DE_all.txt",sep="\t")
+#####
+IIA_vs_IB<-read.table("IIA_vs_IB_fibroblat_DE_all.txt",header=TRUE)
+list_up100gs<-list(up100gs)
+names(list_up100gs)<-c("up100")
+a<-as.vector(IIA_vs_IB$avg_log2FC)
+names(a)<-rownames(IIA_vs_IB)
+mcov_sort = sort(a, decreasing = TRUE)
+mcov_sort = mcov_sort[!duplicated(names(mcov_sort))]
+mcov_sort<-mcov_sort[!is.na(mcov_sort) & !is.infinite(mcov_sort)]
+fgsea_up <- fgsea(list_up100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_up100gs[["up100"]],mcov_sort) + labs(title="up 100")
+
+list_dn100gs<-list(dn100gs)
+names(list_dn100gs)<-c("dn100")
+fgsea_dn <- fgsea(list_dn100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_dn100gs[["dn100"]],mcov_sort) + labs(title="dn 100")
+dev.off()
+
+
+IIB_vs_IIA<-read.table("IIB_vs_IIA_fibroblat_DE_all.txt",header=TRUE)
+list_up100gs<-list(up100gs)
+names(list_up100gs)<-c("up100")
+a<-as.vector(IIB_vs_IIA$avg_log2FC)
+names(a)<-rownames(IIB_vs_IIA)
+mcov_sort = sort(a, decreasing = TRUE)
+mcov_sort = mcov_sort[!duplicated(names(mcov_sort))]
+mcov_sort<-mcov_sort[!is.na(mcov_sort) & !is.infinite(mcov_sort)]
+fgsea_up <- fgsea(list_up100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_up100gs[["up100"]],mcov_sort) + labs(title="up 100")
+
+list_dn100gs<-list(dn100gs)
+names(list_dn100gs)<-c("dn100")
+fgsea_dn <- fgsea(list_dn100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_dn100gs[["dn100"]],mcov_sort) + labs(title="dn 100")
+dev.off()
+
+III_vs_II<-read.table("III_vs_II_fibroblat_DE_all.txt",header=TRUE)
+list_up100gs<-list(up100gs)
+names(list_up100gs)<-c("up100")
+a<-as.vector(III_vs_II$avg_log2FC)
+names(a)<-rownames(III_vs_II)
+mcov_sort = sort(a, decreasing = TRUE)
+mcov_sort = mcov_sort[!duplicated(names(mcov_sort))]
+mcov_sort<-mcov_sort[!is.na(mcov_sort) & !is.infinite(mcov_sort)]
+fgsea_up <- fgsea(list_up100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_up100gs[["up100"]],mcov_sort) + labs(title="up 100")
+
+list_dn100gs<-list(dn100gs)
+names(list_dn100gs)<-c("dn100")
+fgsea_dn <- fgsea(list_dn100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_dn100gs[["dn100"]],mcov_sort) + labs(title="dn 100")
+dev.off()
+
+III_vs_IIB<-read.table("III_vs_IIB_fibroblat_DE_all.txt",header=TRUE)
+list_up100gs<-list(up100gs)
+names(list_up100gs)<-c("up100")
+a<-as.vector(III_vs_IIB$avg_log2FC)
+names(a)<-rownames(III_vs_IIB)
+mcov_sort = sort(a, decreasing = TRUE)
+mcov_sort = mcov_sort[!duplicated(names(mcov_sort))]
+mcov_sort<-mcov_sort[!is.na(mcov_sort) & !is.infinite(mcov_sort)]
+fgsea_up <- fgsea(list_up100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_up100gs[["up100"]],mcov_sort) + labs(title="up 100")
+
+list_dn100gs<-list(dn100gs)
+names(list_dn100gs)<-c("dn100")
+fgsea_dn <- fgsea(list_dn100gs,mcov_sort,nperm=10000)
+plotEnrichment(list_dn100gs[["dn100"]],mcov_sort) + labs(title="dn 100")
+dev.off()
